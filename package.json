@@ -1,0 +1,31 @@
+{
+  "name": "pontifex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"cd frontend && BROWSER=none yarn start\" \"wait-on http://localhost:3000 && DEV=1 electron .\"",
+    "pack": "electron-builder --dir",
+    "dist": "cd frontend && yarn build && cd .. && electron-builder -mwl",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "easymidi": "^2.1.0",
+    "node-osc": "^6.1.16",
+    "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "concurrently": "^7.1.0",
+    "electron": "^18.0.4",
+    "electron-builder": "^23.0.3",
+    "wait-on": "^6.0.1"
+  },
+  "build": {
+    "appId": "your.id",
+    "mac": {
+      "category": "your.app.category.type"
+    }
+  }
+}
