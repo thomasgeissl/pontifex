@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import MidiOutput from "./components/MidiOutput";
+import OscInput from "./components/OscInput";
+import { WebMidi } from "webmidi";
+
+import Slider from "@mui/material/Slider";
+import useStore from "../src/store"
 
 function App() {
+  useEffect(() => {
+    window.electronApi.receive("osc", (data) => {
+      console.log(data);
+    });
+  });
+  const output = useStore(state => state.output)
+  const [value, setValue] = useState(0);
+  const onValueChange = (event, value) => {
+    console.log(value);
+    output?.channels[10].sendControlChange(1, value);
+    setValue(value);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <OscInput></OscInput>
+      <MidiOutput></MidiOutput>
+      <Slider
+        aria-label="Volume"
+        value={value}
+        onChange={onValueChange}
+        min={0}
+        max={127}
+      />
     </div>
   );
 }

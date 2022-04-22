@@ -2,12 +2,12 @@ const { app, BrowserWindow } = require("electron");
 const path = require("path");
 const Server = require("node-osc").Server;
 const Client = require("node-osc").Client;
-const easymidi = require("easymidi");
+// const easymidi = require("easymidi");
 
 const isDev = process.env.DEV;
-
+let win = null;
 function createWindow() {
-  const win = new BrowserWindow({
+  win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -21,10 +21,13 @@ function createWindow() {
   console.log(url);
 
   win.loadURL(url);
+  const client = new Client("127.0.0.1", oscPort);
+  client.send("/address", 200, () => {});
 }
 
 app.whenReady().then(() => {
   createWindow();
+  console.log("test")
 
   app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -39,12 +42,7 @@ app.on("window-all-closed", () => {
   }
 });
 
-const portName = "IAC Driver Bus 1";
 const oscPort = 9009;
-const controller = 1;
-const channel = 1;
-
-const output = new easymidi.Output(portName);
 
 var oscServer = new Server(oscPort, "127.0.0.1", () => {
   console.log("OSC Server is listening");
@@ -53,14 +51,5 @@ var oscServer = new Server(oscPort, "127.0.0.1", () => {
 oscServer.on("message", function (msg) {
   const address = msg[0];
   console.log(address);
-  console.log(msg.length);
-  //   TODO: map value
-  output.send("cc", {
-    controller,
-    value: 1,
-    channel,
-  });
+  win.webContents.send("osc", msg);
 });
-
-const client = new Client("127.0.0.1", oscPort);
-client.send("/address", 200, () => {});
