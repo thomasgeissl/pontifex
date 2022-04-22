@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "concurrently \"cd frontend && BROWSER=none yarn start\" \"wait-on http://localhost:3000 && DEV=1 electron .\"",
     "pack": "electron-builder --dir",
-    "dist": "cd frontend && yarn build && cd .. && electron-builder -m",
+    "dist": "cd frontend && yarn build && cd .. && electron-builder -mw",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
