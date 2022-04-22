@@ -26,6 +26,6 @@
     "mac": {
       "category": "your.app.category.type"
     },
-    "files": ["*.js", "frontend/dist/public/**/*"]
+    "files": ["*.js", "frontend/build/**/*"]
   }
 }
