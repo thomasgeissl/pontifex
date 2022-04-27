@@ -10,16 +10,20 @@ function MidiOutput() {
   const [outputs, setOutputs] = useState([]);
   const output = useStore((state) => state.output);
   const setOutput = useStore((state) => state.setOutput);
+  const outputChannel = useStore((state) => state.outputChannel);
+  const setOutputChannel = useStore((state) => state.setOutputChannel);
   useEffect(() => {
     WebMidi.enable()
       .then(() => {
         setOutputs(WebMidi.outputs);
-        WebMidi.outputs[0].channels[1].sendControlChange(1, 127);
       })
       .catch((err) => console.log(err));
   }, []);
   const onOutputChange = (event) => {
     setOutput(event.target.value);
+  };
+  const onChannelChange = (event) => {
+    setOutputChannel(event.target.value);
   };
   const getOutputs = () => {
     console.log(WebMidi.outputs);
@@ -27,6 +31,7 @@ function MidiOutput() {
   };
   return (
     <div>
+      osc2midi
       <Select
         value={output ? output : ""}
         label="output"
@@ -48,6 +53,15 @@ function MidiOutput() {
       >
         <RefreshIcon />
       </IconButton>
+      <Select value={outputChannel} label="channel" onChange={onChannelChange}>
+        {Array.from(Array(16).keys()).map((_, index) => {
+          return (
+            <MenuItem value={index + 1} key={index + 1}>
+              {index + 1}
+            </MenuItem>
+          );
+        })}
+      </Select>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import MidiInput from "./components/MidiInput";
 import MidiOutput from "./components/MidiOutput";
 import OscInput from "./components/OscInput";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -21,25 +22,44 @@ const darkTheme = createTheme({
   },
 });
 function App() {
+  const input = useStore((state) => state.input);
+  const inputChannel = useStore((state) => state.inputChannel);
   const output = useStore((state) => state.output);
+  const outputChannel = useStore((state) => state.outputChannel);
   const value = useStore((state) => state.value);
   const setValue = useStore((state) => state.setValue);
 
   useEffect(() => {
-    window.electronApi.receive("osc", (data) => {
+    window.electronApi.receive("osc2midi", (data) => {
       const [msg, value] = data;
       output?.channels[10].sendControlChange(1, value);
       setValue(value);
     });
   });
+  useEffect(() => {
+    if (inputChannel) {
+      input?.channels[inputChannel].addListener("noteon", (event) => {
+        console.log(event);
+        window.electronApi.send("midi2osc", {
+          type: event.type,
+          note: event.note.number,
+          velocity: event.rawVelocity,
+        });
+      });
+    }
+  }, [input, inputChannel]);
+
   const onValueChange = (event, value) => {
-    output?.channels[10].sendControlChange(1, value);
+    if (output && outputChannel) {
+      output?.channels[outputChannel].sendControlChange(1, value);
+    }
     setValue(value);
   };
   return (
     <ThemeProvider theme={darkTheme}>
       <Container>
         {/* <OscInput></OscInput> */}
+        <MidiInput></MidiInput>
         <MidiOutput></MidiOutput>
         <Slider
           aria-label="Volume"
