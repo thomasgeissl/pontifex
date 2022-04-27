@@ -7,6 +7,13 @@ import TextField from "@mui/material/TextField";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import useStore from "../../src/store";
+import styled from "@emotion/styled";
+
+const Container = styled.div`
+  * {
+    margin-left: 8px;
+  }
+`;
 
 function isValidIp(str) {
   // Regular expression to check if string is a IP address
@@ -23,6 +30,8 @@ function MidiInput() {
   const inputChannel = useStore((state) => state.inputChannel);
   const setInputChannel = useStore((state) => state.setInputChannel);
   const oscHost = useStore((state) => state.oscHost);
+  const oscOutAddress = useStore((state) => state.oscOutAddress);
+  const oscOutPort = useStore((state) => state.oscOutPort);
   const setOscHost = useStore((state) => state.setOscHost);
   useEffect(() => {
     WebMidi.enable()
@@ -49,8 +58,8 @@ function MidiInput() {
     setInputs(WebMidi.inputs);
   };
   return (
-    <div>
-      midi2osc
+    <Container>
+      <span>midi2osc</span>
       <Select value={input ? input : ""} label="input" onChange={onInputChange}>
         {inputs.map((input) => {
           return (
@@ -74,7 +83,9 @@ function MidiInput() {
       </Select>
       <ArrowRightAltIcon></ArrowRightAltIcon>
       <TextField label="host" value={oscHost} onChange={onOscHostChanged} />
-    </div>
+      <span>{oscOutPort}</span>
+      <span>{oscOutAddress}</span>
+    </Container>
   );
 }
 

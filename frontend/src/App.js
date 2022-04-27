@@ -7,6 +7,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Slider from "@mui/material/Slider";
 import styled from "@emotion/styled";
 import useStore from "../src/store";
+import { List, ListItem } from "./components/List";
 import "./style.css";
 
 const Container = styled.div`
@@ -42,6 +43,7 @@ function App() {
         console.log(event);
         window.electronApi.send("midi2osc", {
           type: event.type,
+          channel: inputChannel,
           note: event.note.number,
           velocity: event.rawVelocity,
         });
@@ -59,8 +61,14 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <Container>
         {/* <OscInput></OscInput> */}
-        <MidiInput></MidiInput>
-        <MidiOutput></MidiOutput>
+        <List>
+          <ListItem>
+            <MidiInput></MidiInput>
+          </ListItem>
+          <ListItem>
+            <MidiOutput></MidiOutput>
+          </ListItem>
+        </List>
         <Slider
           aria-label="Volume"
           value={value}
