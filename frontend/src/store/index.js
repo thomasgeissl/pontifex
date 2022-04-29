@@ -4,6 +4,8 @@ const useStore = create((set) => ({
   input: null,
   inputChannel: 11,
   oscHost: "127.0.0.1",
+  oscOutPort: 9020,
+  oscOutAddress: "/kls/io/midi2osc",
   output: null,
   outputChannel: 10,
   value: 0,

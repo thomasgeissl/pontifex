@@ -12,7 +12,7 @@ let client = new Client("127.0.0.1", oscOutPort);
 let win = null;
 function createWindow() {
   win = new BrowserWindow({
-    width: 800,
+    width: 1024,
     height: 400,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -25,8 +25,9 @@ function createWindow() {
   win.loadURL(url);
 }
 ipcMain.on("midi2osc", (event, arg) => {
-  const message = new Message("/kls/io/ableton");
+  const message = new Message("/kls/io/midi2osc");
   message.append(arg.type);
+  message.append(arg.channel);
   message.append(arg.note);
   message.append(arg.velocity);
 

@@ -4,7 +4,15 @@ import IconButton from "@mui/material/IconButton";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import useStore from "../../src/store";
+import styled from "@emotion/styled";
+
+const Container = styled.div`
+  * {
+    margin-left: 8px;
+  }
+`;
 
 function MidiOutput() {
   const [outputs, setOutputs] = useState([]);
@@ -30,8 +38,11 @@ function MidiOutput() {
     setOutputs(WebMidi.outputs);
   };
   return (
-    <div>
-      osc2midi
+    <Container>
+      <span>osc2midi</span>
+      <span>9010</span>
+      <span>/kls/io/crank</span>
+      <ArrowRightAltIcon></ArrowRightAltIcon>
       <Select
         value={output ? output : ""}
         label="output"
@@ -62,7 +73,7 @@ function MidiOutput() {
           );
         })}
       </Select>
-    </div>
+    </Container>
   );
 }
 
