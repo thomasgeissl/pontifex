@@ -36,7 +36,7 @@ function App() {
       output?.channels[10].sendControlChange(1, value);
       setValue(value);
     });
-  });
+  }, []);
   useEffect(() => {
     if (inputChannel) {
       input?.channels[inputChannel].addListener("noteon", (event) => {
