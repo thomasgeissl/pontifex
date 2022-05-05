@@ -7,7 +7,7 @@ const Message = require("node-osc").Message;
 const isDev = process.env.DEV;
 const oscPort = 9010;
 const oscOutPort = 9020;
-let client = new Client("127.0.0.1", oscOutPort);
+let client = new Client("192.168.2.255", oscOutPort);
 
 let win = null;
 function createWindow() {

@@ -3,7 +3,7 @@ import create from "zustand";
 const useStore = create((set) => ({
   input: null,
   inputChannel: 11,
-  oscHost: "127.0.0.1",
+  oscHost: "192.168.2.255",
   oscOutPort: 9020,
   oscOutAddress: "/kls/io/midi2osc",
   output: null,
